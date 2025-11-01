@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Settings, Calculator } from "lucide-react";
+import { Settings, Calculator, Eye } from "lucide-react";
+import { GearVisualization } from "@/components/GearVisualization";
 
 const Index = () => {
   const [teethCount, setTeethCount] = useState("20");
@@ -63,6 +64,26 @@ const Index = () => {
             Calculate gear alignment parameters including angle per tooth, gear radius, and compressor offset for perfect gear meshing in Plane Crazy.
           </p>
         </div>
+
+        {/* Visual Representation */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5 text-primary" />
+              Visual Representation
+            </CardTitle>
+            <CardDescription>
+              How your gear looks in Plane Crazy
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <GearVisualization
+              teethCount={parseFloat(teethCount) || 0}
+              anglePerTooth={anglePerTooth}
+              currentOffset={parseFloat(currentOffset) || 0}
+            />
+          </CardContent>
+        </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Input Section */}
