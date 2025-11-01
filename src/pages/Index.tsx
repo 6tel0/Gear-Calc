@@ -35,11 +35,15 @@ const Index = () => {
     // Half angle = angle per tooth / 2
     const halfAngleCalc = anglePerToothCalc / 2;
     
-    // Gear radius = teeth / (2 * π)
-    const gearRadiusCalc = teeth / (2 * Math.PI);
+    // Convert to radians for trigonometry
+    const aRad = (anglePerToothCalc * Math.PI) / 180;
+    const bRad = (halfAngleCalc * Math.PI) / 180;
     
-    // Compressor offset = current offset compensation
-    const compressorOffsetCalc = -offset;
+    // Gear radius using trigonometry: r = cos(b) / sin(a)
+    const gearRadiusCalc = Math.cos(bRad) / Math.sin(aRad);
+    
+    // Compressor offset: Offset = 1 - r + current offset
+    const compressorOffsetCalc = 1 - gearRadiusCalc + offset;
 
     setAnglePerTooth(anglePerToothCalc);
     setHalfAngle(halfAngleCalc);
@@ -136,22 +140,12 @@ const Index = () => {
               </div>
 
               <div className="p-4 rounded-lg bg-card border border-border">
-                <div className="text-sm text-muted-foreground mb-1">Gear Radius</div>
-                <div className="text-2xl font-bold text-primary">
-                  {gearRadius.toFixed(3)} units
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Calculated gear circle radius
-                </p>
-              </div>
-
-              <div className="p-4 rounded-lg bg-card border border-border">
                 <div className="text-sm text-muted-foreground mb-1">Compressor Offset</div>
                 <div className="text-2xl font-bold text-accent">
-                  {compressorOffset.toFixed(2)}°
+                  {compressorOffset.toFixed(6)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Required adjustment for alignment
+                  Required compressor adjustment
                 </p>
               </div>
             </CardContent>
@@ -165,16 +159,13 @@ const Index = () => {
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div>
-              <span className="font-semibold text-foreground">Angle Per Tooth:</span> Calculated as 360° divided by the number of teeth. This determines how much the gear rotates per tooth engagement.
+              <span className="font-semibold text-foreground">Angle Per Tooth:</span> Calculated as 360° divided by the number of teeth (a = 360 / n).
             </div>
             <div>
-              <span className="font-semibold text-foreground">Half Angle:</span> Half of the angle per tooth, useful for precise positioning calculations.
+              <span className="font-semibold text-foreground">Half Angle:</span> Half of the angle per tooth (b = a / 2).
             </div>
             <div>
-              <span className="font-semibold text-foreground">Gear Radius:</span> The radius of the gear circle, calculated using the formula: teeth / (2π). This helps determine spacing between gears.
-            </div>
-            <div>
-              <span className="font-semibold text-foreground">Compressor Offset:</span> The adjustment needed via compressors to correct any current misalignment. This negates the current offset to achieve perfect meshing.
+              <span className="font-semibold text-foreground">Compressor Offset:</span> The adjustment needed via compressors, calculated using trigonometry: r = cos(b) / sin(a), then Offset = 1 - r + current offset.
             </div>
           </CardContent>
         </Card>
