@@ -16,7 +16,7 @@ const Index = () => {
 
   const calculateAlignment = () => {
     const teeth = parseFloat(teethCount) || 0;
-    const offset = parseFloat(currentOffset) || 0;
+    const inputOffset = parseFloat(currentOffset) || 0;
 
     if (teeth === 0) {
       setAnglePerTooth(0);
@@ -32,11 +32,11 @@ const Index = () => {
     const bRad = (b * Math.PI) / 180;
 
     const r = Math.cos(bRad) / Math.sin(aRad);
-    const offset = 1 - r + offset;
+    const result = 1 - r + inputOffset;
 
     setAnglePerTooth(a);
     setHalfAngle(b);
-    setCompressorOffset(offset);
+    setCompressorOffset(result);
   };
 
   return (
