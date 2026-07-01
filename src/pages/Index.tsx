@@ -11,10 +11,6 @@ const Index = () => {
   const [compressorOffset, setCompressorOffset] = useState(0);
 
   useEffect(() => {
-    calculateAlignment();
-  }, [teethCount, currentOffset]);
-
-  const calculateAlignment = () => {
     const teeth = parseFloat(teethCount) || 0;
     const inputOffset = parseFloat(currentOffset) || 0;
 
@@ -27,71 +23,77 @@ const Index = () => {
 
     const a = 360 / teeth;
     const b = a / 2;
-
     const aRad = (a * Math.PI) / 180;
     const bRad = (b * Math.PI) / 180;
-
     const r = Math.cos(bRad) / Math.sin(aRad);
     const result = 1 - r + inputOffset;
 
     setAnglePerTooth(a);
     setHalfAngle(b);
     setCompressorOffset(result);
-  };
+  }, [teethCount, currentOffset]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight">Plane Crazy Alignment</h1>
-        </div>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <main className="flex-1 px-8 py-10 max-w-6xl mx-auto w-full">
+        <h1 className="text-4xl font-bold tracking-tight mb-10">Gear calc</h1>
 
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="teeth" className="text-sm text-muted-foreground">Teeth</Label>
-            <Input
-              id="teeth"
-              type="number"
-              value={teethCount}
-              onChange={(e) => setTeethCount(e.target.value)}
-              className="mt-1 bg-secondary border-border text-foreground"
-            />
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="rounded-xl border border-border bg-card p-8 space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="teeth" className="text-xs uppercase tracking-wider text-muted-foreground">Teeth</Label>
+              <Input
+                id="teeth"
+                type="number"
+                value={teethCount}
+                onChange={(e) => setTeethCount(e.target.value)}
+                className="bg-secondary border-border"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="offset" className="text-xs uppercase tracking-wider text-muted-foreground">Current Offset</Label>
+              <Input
+                id="offset"
+                type="number"
+                step="0.1"
+                value={currentOffset}
+                onChange={(e) => setCurrentOffset(e.target.value)}
+                className="bg-secondary border-border"
+              />
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="offset" className="text-sm text-muted-foreground">Current Offset</Label>
-            <Input
-              id="offset"
-              type="number"
-              step="0.1"
-              value={currentOffset}
-              onChange={(e) => setCurrentOffset(e.target.value)}
-              className="mt-1 bg-secondary border-border text-foreground"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-3 text-sm font-mono">
-          <div className="flex justify-between border-b border-border pb-2">
-            <span className="text-muted-foreground">Angle per tooth</span>
-            <span>{anglePerTooth.toFixed(4)}</span>
-          </div>
-          <div className="flex justify-between border-b border-border pb-2">
-            <span className="text-muted-foreground">Half angle</span>
-            <span>{halfAngle.toFixed(4)}</span>
-          </div>
-          <div className="flex justify-between border-b border-border pb-2">
-            <span className="text-muted-foreground">Compressor offset</span>
-            <span>{compressorOffset.toFixed(6)}</span>
+          <div className="rounded-xl border border-border bg-card p-8 space-y-5 font-mono">
+            <Row label="Angle per tooth" value={anglePerTooth.toFixed(4)} />
+            <Row label="Half angle" value={halfAngle.toFixed(4)} />
+            <Row label="Compressor offset" value={compressorOffset.toFixed(6)} highlight />
           </div>
         </div>
+      </main>
 
-        <div className="text-center text-xs text-muted-foreground pt-8">
-          Made by "Inimene"
-        </div>
-      </div>
+      <footer className="border-t border-border py-6 text-center text-sm text-muted-foreground">
+        YouTube:{" "}
+        <a
+          href="https://www.youtube.com/@6tel0"
+          target="_blank"
+          rel="noreferrer"
+          className="text-foreground hover:underline"
+        >
+          @6tel0
+        </a>
+        {" • Made by "}
+        <span className="text-foreground">Inimene</span>
+      </footer>
     </div>
   );
 };
+
+const Row = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
+  <div className="flex justify-between items-center border-b border-border pb-3 last:border-0">
+    <span className="text-xs uppercase tracking-wider text-muted-foreground">{label}</span>
+    <span className={highlight ? "text-lg" : "text-sm"}>{value}</span>
+  </div>
+);
 
 export default Index;
