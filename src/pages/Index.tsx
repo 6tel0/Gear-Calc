@@ -59,8 +59,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -right-40 w-[500px] h-[500px] rounded-full bg-accent/20 blur-3xl" />
+
 
       <main className="flex-1 px-8 py-12 max-w-6xl mx-auto w-full relative z-10">
         <h1 className="text-4xl font-bold tracking-tight mb-10 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
